@@ -1,0 +1,12 @@
+alpaca-py
+scikit-learn
+pandas
+numpy
+matplotlib
+mlflow
+streamlit
+evidently
+python-dotenv
+pytest
+ta
+xgboost

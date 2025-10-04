@@ -1,0 +1,9 @@
+aliases:
+  challenger: '9'
+  champion: '9'
+creation_timestamp: 1759559083806
+deployment_job_id: null
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1759568040288
+name: daily-price-forecaster

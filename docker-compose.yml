@@ -1,0 +1,138 @@
+services:
+  mlflow:
+    build: .
+    container_name: mlflow-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - MLFLOW_TRACKING_URI=http://localhost:5000
+    command: mlflow server --host 0.0.0.0 --port 5000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - mlops-network
+
+  orchestrator:
+    build: .
+    container_name: orchestrator-service
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./src:/app/src
+      - trade_logs:/app
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_API_SECRET=${ALPACA_API_SECRET}
+      - ALPACA_BASE_URL=${ALPACA_BASE_URL}
+    command: python src/orchestrator.py
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    networks:
+      - mlops-network
+
+  dashboard:
+    build: .
+    container_name: dashboard-service
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./src:/app/src
+      - trade_logs:/app
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_API_SECRET=${ALPACA_API_SECRET}
+      - ALPACA_BASE_URL=${ALPACA_BASE_URL}
+    command: streamlit run src/dashboard.py --server.port=8501 --server.address=0.0.0.0
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - mlops-network
+
+  backtest:
+    build: .
+    container_name: backtest-service
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./src:/app/src
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_API_SECRET=${ALPACA_API_SECRET}
+      - ALPACA_BASE_URL=${ALPACA_BASE_URL}
+    command: python src/backtest.py
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    profiles: ["manual"]
+    networks:
+      - mlops-network
+
+  monitor:
+    build: .
+    container_name: monitor-service
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./src:/app/src
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_API_SECRET=${ALPACA_API_SECRET}
+      - ALPACA_BASE_URL=${ALPACA_BASE_URL}
+    command: python src/monitor.py
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    profiles: ["manual"]
+    networks:
+      - mlops-network
+
+  trade:
+    build: .
+    container_name: trade-service
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./src:/app/src
+      - trade_logs:/app
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_API_SECRET=${ALPACA_API_SECRET}
+      - ALPACA_BASE_URL=${ALPACA_BASE_URL}
+    command: python src/trade.py
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    profiles: ["manual"]
+    networks:
+      - mlops-network
+
+networks:
+  mlops-network:
+    driver: bridge
+
+volumes:
+  trade_logs:  # Named volume for shared database

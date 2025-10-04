@@ -1,0 +1,14 @@
+artifact_uri: file:C:/Users/razin/PycharmProjects/MLOps_project/mlruns/937380457195446320/b772c854eabc4c848ee54ec65cecf776/artifacts
+end_time: 1759568030051
+entry_point_name: ''
+experiment_id: '937380457195446320'
+lifecycle_stage: active
+run_id: b772c854eabc4c848ee54ec65cecf776
+run_name: SPY_backtest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1759568026308
+status: 3
+tags: []
+user_id: root
