@@ -14,6 +14,8 @@ End-to-end MLOps system for algorithmic trading with automated model training, v
 - **Accuracy**: 50.4% | **Precision**: 54.0% | **Recall**: 64.2%
 - **804 trading days** backtested | **222 trades** executed
 
+  Note: The model specs and results aren't the main focus here, more so creating the platform to deploy any model. As a result (if you check backtest.py) you will notice the model parameters are intentionally subpar for quicker training and debugging.
+
 ## Tech Stack
 **ML/Data**: Python, XGBoost, NumPy, Pandas, scikit-learn  
 **MLOps**: MLflow (experiment tracking, model registry), Docker, docker-compose  
