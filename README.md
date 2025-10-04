@@ -18,6 +18,9 @@ End-to-end MLOps system for algorithmic trading with automated model training, v
 
 ## Tech Stack
 **ML/Data**: Python, XGBoost, NumPy, Pandas, scikit-learn  
+
 **MLOps**: MLflow (experiment tracking, model registry), Docker, docker-compose  
+
 **Monitoring**: Streamlit dashboard, SQLite trade logging
+
 **APIs**: Alpaca Trading API
