@@ -2,7 +2,7 @@
 
 End-to-end MLOps system for algorithmic trading with automated model training, versioning, deployment, and performance monitoring.
 
-## 🚀 Key Features
+## Key Features
 - **Automated data pipeline** for multi-stock ingestion and feature engineering (70+ technical indicators)
 - **Rolling window backtesting** on 4+ years of historical data with XGBoost classifier
 - **MLflow experiment tracking** with alias-based model registry (migrated from deprecated stages)
@@ -10,11 +10,11 @@ End-to-end MLOps system for algorithmic trading with automated model training, v
 - **Docker containerization** with multi-service orchestration
 - **Real-time monitoring dashboard** (Streamlit) for trade analytics and model performance
 
-## 📊 Results
+## Results
 - **Accuracy**: 50.4% | **Precision**: 54.0% | **Recall**: 64.2%
 - **804 trading days** backtested | **222 trades** executed
 
-## 🛠️ Tech Stack
+## Tech Stack
 **ML/Data**: Python, XGBoost, NumPy, Pandas, scikit-learn  
 **MLOps**: MLflow (experiment tracking, model registry), Docker, docker-compose  
 **Monitoring**: Streamlit dashboard, SQLite trade logging
